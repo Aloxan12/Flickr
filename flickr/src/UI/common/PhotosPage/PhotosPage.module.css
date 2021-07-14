@@ -1,31 +1,35 @@
-import React from "react";
-import {Paper} from "@material-ui/core";
-import {photoType} from "../../../DAL/api";
-
-export type PhotosType ={
-    photos: photoType[]
-    titleBtn: string
-    handlerOnClick: (id: string)=> void
+.containerPhotos{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-flow: wrap;
+    height: 68vh;
+    margin: 10px 5px;
+    width: 92%;
+    overflow-scrolling: auto;
+    overflow-x: hidden;
 }
-export const Photos: React.FC<PhotosType> = ({photos, titleBtn, handlerOnClick}) => {
-    return (
-        <div className={}>
-            {photos.map(p => {
-                return (
-                    <div key={p.id}>
-                        <Paper>
-                            <div key={p.id}>
-                                <img src={`https://live.staticflickr.com/${p.server}/${p.id}_${p.secret}.jpg`}
-                                     alt=""
-                                />
-                                <button onClick={() => handlerOnClick(p.id)}
-                                >{titleBtn}</button>
-                                <span>{p.title}</span>
-                            </div>
-                        </Paper>
-                    </div>
-                )
-            })}
-        </div>
-    )
+.photo{
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+    padding: 10px;
+    align-items: center;
+}
+.photo img{
+    overflow: hidden;
+    width: 500px;
+    height: 400px;
+    object-fit: cover;
+}
+.photo button{
+    width: 200px;
+    margin-top: 10px;
+}
+.photo span {
+    width: 500px;
+    margin-top: 10px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }

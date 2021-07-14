@@ -1,11 +1,11 @@
 import React, {useState} from 'react';
-import s from './Pagination.module.css'
+import style from './Pagination.module.css'
 import {useDispatch, useSelector} from "react-redux";
-import {AppRootStateType} from "../../BLL/store";
+import {AppRootStateType} from "../../../BLL/store";
 import Button from '@material-ui/core/Button';
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 import ArrowRightIcon from '@material-ui/icons/ArrowRight';
-import {setCurrentPage} from "../../BLL/mainPage-reducer";
+import {actions} from "../../../BLL/mainPage-reducer";
 
 export const Pagination: React.FC = () => {
 
@@ -14,7 +14,7 @@ export const Pagination: React.FC = () => {
     const dispatch = useDispatch()
 
     const changePage = (page: number) => {
-        dispatch(setCurrentPage(page))
+        dispatch(actions.setCurrentPage(page))
     }
 
     const pagesCount: number[] = []
@@ -32,7 +32,7 @@ export const Pagination: React.FC = () => {
     const rightBorderPageNumber = borderNumber * borderSize
 
     return (
-        <div className={s.container}>
+        <div className={style.container}>
 
             {borderNumber > 1 && <Button variant="outlined" color="primary"
                                          onClick={() => {

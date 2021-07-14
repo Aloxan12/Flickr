@@ -1,25 +1,13 @@
-import {Dispatch} from "redux";
-import {AppRootStateType} from "./store";
-import {pageAPI, PhotoType} from "../DAL/api";
+import {
+    actions,
+    InitialStateType,
+    mainPageReducer,
+    PaginationType,
+} from "./mainPage-reducer";
+import {PhotoType} from "../DAL/api";
 
-type ActionsType = ReturnType<typeof setNewPhotos>
-    | ReturnType<typeof setPages>
-    | ReturnType<typeof setCurrentPage>
 
-export enum mainPageReducerType {
-    'SET-NEW-PHOTOS' = 'mainPage/SET-NEW-PHOTOS',
-    'SET-PAGES' = 'mainPage/SET-PAGES',
-    'SET-CURRENT-PAGE' = 'mainPage/SET-CURRENT-PAGE'
-}
-
-export type InitialStateSearchKeyWordType = typeof initialState
-export type PaginationType = {
-    page: number
-    pages: null | number
-    perpage: number
-}
-
-let initialState = {
+let state:InitialStateType =  {
     photos: [] as Array<PhotoType>,
     pagination: {
         page: 1,
@@ -28,57 +16,25 @@ let initialState = {
     } as PaginationType
 }
 
+test('set new photo', () => {
+    let action = actions.setNewPhotos([
+        {farm: 66, id: '12321443', isfamily: 2, isfriend: 1,ispublic: 1, owner: 'czx', secret: 'sasaa',server: 'http',title: 'prod'},
+        {farm: 66, id: '89921443', isfamily: 2, isfriend: 1,ispublic: 1, owner: 'czx', secret: 'sasaa',server: 'http',title: 'tree'},
+        {farm: 66, id: '45421443', isfamily: 2, isfriend: 1,ispublic: 1, owner: 'czx', secret: 'sasaa',server: 'http',title: 'val'},
+    ])
 
-export const mainPageReducer = (state = initialState, action: ActionsType): InitialStateSearchKeyWordType => {
-    switch (action.type) {
-        case mainPageReducerType['SET-NEW-PHOTOS'] :
-            return {...state, photos: action.photos}
-        case mainPageReducerType['SET-PAGES'] :
-            return {
-                ...state,
-                pagination: {
-                    ...state.pagination,
-                    pages: action.pages
-                }
-            }
-        case mainPageReducerType['SET-CURRENT-PAGE']:
-            return {
-                ...state,
-                pagination: {
-                    ...state.pagination,
-                    page: action.currentPage,
-                }
-            }
-        default:
-            return state
-    }
-}
+    let newState = mainPageReducer(state, action)
+    expect(newState.photos.length).toBe(3)
+})
+test('set current page', () => {
+    let action = actions.setCurrentPage(2)
 
-//AC
-export const setNewPhotos = (photos: Array<PhotoType>) => ({
-    type: mainPageReducerType['SET-NEW-PHOTOS'],
-    photos
-} as const)
-export const setPages = (pages: number) => ({
-    type: mainPageReducerType['SET-PAGES'],
-    pages
-} as const)
-export const setCurrentPage = (currentPage: number) => ({
-    type: mainPageReducerType['SET-CURRENT-PAGE'],
-    currentPage
-} as const)
+    let newState = mainPageReducer(state, action)
+    expect(newState.pagination.page).toBe(2)
+})
+test('set  pages', () => {
+    let action = actions.setPages(2)
 
-//TC
-export const searchPhotos = (keyword: string) => (dispatch: Dispatch, getState: () => AppRootStateType) => {
-    const {page, perpage} = getState().mainPageReducer.pagination
-    try {
-        pageAPI.getNewImages(keyword, page, perpage)
-            .then(res => {
-                const {pages, photo} = res.data.photos
-                dispatch(setNewPhotos(photo))
-                dispatch(setPages(pages))
-            })
-    } catch (e) {
-        console.log('Error')
-    }
-}
+    let newState = mainPageReducer(state, action)
+    expect(newState.pagination.pages).toBe(2)
+})
