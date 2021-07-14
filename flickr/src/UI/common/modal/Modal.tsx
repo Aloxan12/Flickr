@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import style from "./Modal.module.css";
 
 type ModalType = {
@@ -12,16 +12,6 @@ export const Modal: React.FC<ModalType> = ({active, setActive, children}) => {
             <div className={active ? `${style.modalContent} + '' + ${style.active}` : style.modalContent}>
                 {children}
             </div>
-        </div>
-    )
-}
-export const ModalView: React.FC = () => {
-    const [active, setActive] = useState<boolean>(false)
-    return (
-        <div>
-            <button onClick={()=> setActive(true)}>+</button>
-            lorem1xzXZXZ
-            <Modal active={active} setActive={setActive}> Модалка вжух вжух</Modal>
         </div>
     )
 }

@@ -1,14 +1,18 @@
-import React from 'react';
+import React, {useState} from 'react';
 import style from './App.module.css';
 import {AppBar, createStyles, IconButton, makeStyles, Theme, Typography} from "@material-ui/core";
 import {Toolbar} from '@material-ui/core';
 import {AccountCircle} from "@material-ui/icons";
 import {Redirect,Switch,Route} from 'react-router-dom';
-import {Navbar} from "./UI/common/Navbar/Navbar";
-import {MainPage} from "./UI/common/MainPages";
-import {Bookmarks} from "./UI/common/BookmarksPage/BookmarksPage";
+import {Navbar} from "./UI/components/Navbar/Navbar";
+import {MainPage} from "./UI/components/MainPages";
+import {Bookmarks} from "./UI/components/BookmarksPage/BookmarksPage";
+import {Modal} from "./UI/common/modal/Modal";
 
-function App() {
+
+const App= ()=> {
+    let [timeoutId, setTimeoutId] = useState<Array<number | NodeJS.Timeout>>([])
+    const [notification, setNotification] = useState<boolean>(false)
     const useStyles = makeStyles((theme: Theme) =>
         createStyles({
             root: {
@@ -23,7 +27,24 @@ function App() {
         }),
     );
     return (
-        <div>
+        <div onClick={()=>{}}
+             onMouseMove={()=>{
+                 if(timeoutId.length > 0){
+                     timeoutId.forEach((val: number | NodeJS.Timeout)=> {
+                         if(typeof val === 'number'){
+                             window.clearTimeout(val)
+                         }
+                     });
+                     setTimeoutId([]);
+                     setNotification(false)
+                 }
+                 setTimeoutId([
+                     ...timeoutId,
+                     setTimeout(()=>{
+                         setNotification(true)
+                     }, 60000)
+                 ])
+             }}>
             <AppBar position="static">
                 <Toolbar>
                     <Typography variant="h6" className={useStyles().title}>
@@ -46,6 +67,7 @@ function App() {
 
             <div className={style.mainPage}>
                 <Navbar/>
+                <Modal active={notification} setActive={setNotification} > Спящий режим</Modal>
                 <Switch>
                     <Route exact path='/' render={() => <Redirect to='/main'/>}/>
                     <Route exact path='/main' render={() => <MainPage />}/>

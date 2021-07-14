@@ -6,8 +6,8 @@ import {AppRootStateType} from "../../../BLL/store";
 import {searchPhotos} from "../../../BLL/mainPage-reducer";
 import {Photos} from "../PhotosPage/PhotosPage";
 import style from './Search.module.css'
-import {Pagination} from "../Pagination/Pagination";
-import {Modal} from "../modal/Modal";
+import {Pagination} from "../../common/Pagination/Pagination";
+import {Modal} from "../../common/modal/Modal";
 
 export const Search: React.FC = () => {
     const [value, setValue] = useState<string>('')
