@@ -1,0 +1,7 @@
+.navbarContainer {
+    width: 10%;
+    background: #626696;
+}
+.hov :hover{
+    color: blue;
+}

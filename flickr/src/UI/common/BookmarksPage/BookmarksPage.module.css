@@ -1,0 +1,21 @@
+import React, {useState} from "react";
+import {photoType} from "../../../DAL/api";
+import {getParseLocalStorageData, setPhotoToLocalStorage} from "../../../BLL/localStorage";
+import {Photos} from "../PhotosPage/PhotosPage";
+
+export const Bookmarks: React.FC = () => {
+    const [photosLS, setPhotosLS] = useState<photoType[]>(getParseLocalStorageData('stateLocalStorage'))
+
+    const deletePhotoLocalStorage = (id: string) => {
+        const newPhotoData = photosLS.filter(p => p.id !== id)
+        setPhotosLS(newPhotoData);
+        setPhotoToLocalStorage('stateLocalStorage', JSON.stringify(
+            newPhotoData
+        ))
+    }
+    return (
+        <div >
+            <Photos photos={photosLS} titleBtn='Remove it!' handlerOnClick={deletePhotoLocalStorage}/>
+        </div>
+    )
+}

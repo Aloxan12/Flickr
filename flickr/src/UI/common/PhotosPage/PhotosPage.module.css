@@ -1,0 +1,31 @@
+import React from "react";
+import {Paper} from "@material-ui/core";
+import {photoType} from "../../../DAL/api";
+
+export type PhotosType ={
+    photos: photoType[]
+    titleBtn: string
+    handlerOnClick: (id: string)=> void
+}
+export const Photos: React.FC<PhotosType> = ({photos, titleBtn, handlerOnClick}) => {
+    return (
+        <div className={}>
+            {photos.map(p => {
+                return (
+                    <div key={p.id}>
+                        <Paper>
+                            <div key={p.id}>
+                                <img src={`https://live.staticflickr.com/${p.server}/${p.id}_${p.secret}.jpg`}
+                                     alt=""
+                                />
+                                <button onClick={() => handlerOnClick(p.id)}
+                                >{titleBtn}</button>
+                                <span>{p.title}</span>
+                            </div>
+                        </Paper>
+                    </div>
+                )
+            })}
+        </div>
+    )
+}

@@ -1,0 +1,50 @@
+import React, {ChangeEvent, KeyboardEvent, useEffect, useState} from "react";
+import {photoType} from "../../../DAL/api";
+import {getParseLocalStorageData, setPhotoToLocalStorage} from "../../../BLL/localStorage";
+import {useDispatch, useSelector} from "react-redux";
+import {AppRootStateType} from "../../../BLL/store";
+import {searchPhotos} from "../../../BLL/mainPage-reducer";
+import {Photos} from "../PhotosPage/PhotosPage";
+
+export const Search: React.FC = () => {
+    const [value, setValue] = useState<string>('')
+    const [photoLS, setPhotoLS] = useState<photoType[]>(getParseLocalStorageData('stateLocalStorage'))
+    const activePage = useSelector<AppRootStateType, number>(state => state.mainPageReducer.pagination.page)
+    const photos = useSelector<AppRootStateType, photoType[]>(state => state.mainPageReducer.photos)
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (value) {
+            dispatch(searchPhotos(value))
+        }
+    }, [activePage, dispatch, value])
+
+    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setValue(e.currentTarget.value)
+    }
+
+    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            dispatch(searchPhotos(value))
+        }
+    }
+
+    const addPhotoLocalStorage = (id: string) => {
+        const newPhotoData = photos.filter(p => p.id === id)
+        const photosFromLS = getParseLocalStorageData('stateLocalStorage');
+
+        setPhotoLS([...photosFromLS, newPhotoData[0]])
+        setPhotoToLocalStorage('stateLocalStorage', JSON.stringify(
+            [...photosFromLS, newPhotoData[0]]
+        ))
+    }
+    return (
+        <div>
+            <input onChange={onChangeHandler}
+                   onKeyPress={onKeyPressHandler}
+                   placeholder='Search'
+            />
+            <Photos photos={photos} titleBtn='Bookmarks it!' handlerOnClick={addPhotoLocalStorage}/>
+        </div>
+    )
+}
