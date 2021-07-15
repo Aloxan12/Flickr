@@ -9,7 +9,7 @@ export const Navbar: React.FC = () => {
     return (
         <div className={style.navbarContainer}>
             <Grid container direction="column" alignItems="center">
-                <NavLink to="/main">
+                <NavLink to="/search">
                     <IconButton color={"primary"} className={style.hov}>
                         <Cloud fontSize='large' />
                     </IconButton>

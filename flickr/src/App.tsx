@@ -3,16 +3,17 @@ import style from './App.module.css';
 import {AppBar, createStyles, IconButton, makeStyles, Theme, Typography} from "@material-ui/core";
 import {Toolbar} from '@material-ui/core';
 import {AccountCircle} from "@material-ui/icons";
-import {Redirect,Switch,Route} from 'react-router-dom';
+import {Redirect, Switch, Route} from 'react-router-dom';
 import {Navbar} from "./UI/components/Navbar/Navbar";
-import {MainPage} from "./UI/components/MainPages";
 import {Bookmarks} from "./UI/components/BookmarksPage/BookmarksPage";
 import {Modal} from "./UI/common/modal/Modal";
+import {Search} from "./UI/components/SearchPage/Search";
 
 
-const App= ()=> {
-    let [timeoutId, setTimeoutId] = useState<Array<number | NodeJS.Timeout>>([])
+const App = () => {
+    const [timeoutId, setTimeoutId] = useState<Array<number | NodeJS.Timeout>>([])
     const [notification, setNotification] = useState<boolean>(false)
+
     const useStyles = makeStyles((theme: Theme) =>
         createStyles({
             root: {
@@ -26,12 +27,14 @@ const App= ()=> {
             },
         }),
     );
+
     return (
-        <div onClick={()=>{}}
-             onMouseMove={()=>{
-                 if(timeoutId.length > 0){
-                     timeoutId.forEach((val: number | NodeJS.Timeout)=> {
-                         if(typeof val === 'number'){
+        <div onClick={() => {
+        }}
+             onMouseMove={() => {
+                 if (timeoutId.length > 0) {
+                     timeoutId.forEach((val: number | NodeJS.Timeout) => {
+                         if (typeof val === 'number') {
                              window.clearTimeout(val)
                          }
                      });
@@ -40,7 +43,7 @@ const App= ()=> {
                  }
                  setTimeoutId([
                      ...timeoutId,
-                     setTimeout(()=>{
+                     setTimeout(() => {
                          setNotification(true)
                      }, 60000)
                  ])
@@ -67,11 +70,11 @@ const App= ()=> {
 
             <div className={style.mainPage}>
                 <Navbar/>
-                <Modal active={notification} setActive={setNotification} > Спящий режим</Modal>
+                <Modal active={notification} setActive={setNotification}>Sleep mode</Modal>
                 <Switch>
-                    <Route exact path='/' render={() => <Redirect to='/main'/>}/>
-                    <Route exact path='/main' render={() => <MainPage />}/>
-                    <Route exact path='/bookmarks' render={() => <Bookmarks />}/>
+                    <Route exact path='/' render={() => <Redirect to='/search'/>}/>
+                    <Route exact path='/search' render={() => <Search />}/>
+                    <Route exact path='/bookmarks' render={() => <Bookmarks/>}/>
                     <Route exact path='/404' render={() => <div>404 PAGE NO FOUND</div>}/>
                     <Route exact path='*' render={() => <Redirect to='404'/>}/>
                 </Switch>
