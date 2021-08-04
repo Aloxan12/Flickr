@@ -4,6 +4,7 @@ import style from "./Modal.module.css";
 type ModalType = {
     active: boolean
     setActive: (value: boolean) => void
+    children: string
 }
 
 export const Modal: React.FC<ModalType> = ({active, setActive, children}) => {
